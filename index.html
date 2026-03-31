@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaDogs Pet - Banho & Beleza para seu Pet</title>
+  <meta name="description" content="Produtos premium para banho de cães e gatos. Shampoos, condicionadores e acessórios com ingredientes naturais.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', -apple-system, sans-serif; background: hsl(210 30% 96%); color: hsl(210 50% 10%); }
+    a { text-decoration: none; color: inherit; }
+
+    /* Header */
+    .header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid hsl(210 25% 88%); }
+    .header-inner { max-width: 1152px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 8px; }
+    .logo-icon { background: linear-gradient(135deg, hsl(210 80% 45%), hsl(195 85% 40%)); border-radius: 12px; padding: 8px; color: white; display: flex; }
+    .logo-text { font-size: 18px; font-weight: 700; }
+    .logo-tag { font-size: 11px; color: hsl(210 80% 45%); font-weight: 600; margin-left: 4px; }
+    nav { display: flex; gap: 24px; }
+    nav a { font-size: 14px; font-weight: 500; color: hsl(210 15% 50%); transition: color 0.2s; }
+    nav a:hover, nav a.active { color: hsl(210 80% 45%); }
+    .cart-btn { position: relative; background: hsl(195 70% 92%); border: none; border-radius: 50%; padding: 10px; cursor: pointer; }
+    .cart-btn svg { color: hsl(210 80% 45%); }
+    .cart-badge { position: absolute; top: -4px; right: -4px; background: linear-gradient(135deg, hsl(210 80% 45%), hsl(195 85% 40%)); color: white; font-size: 10px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .menu-btn { display: none; background: hsl(195 70% 92%); border: none; border-radius: 50%; padding: 10px; cursor: pointer; }
+
+    /* Hero */
+    .hero { background: linear-gradient(160deg, hsl(210 80% 30%), hsl(195 75% 45%), hsl(185 80% 50%)); border-radius: 24px; padding: 48px; color: white; position: relative; overflow: hidden; }
+    .hero-circle1 { position: absolute; right: -64px; top: -64px; width: 256px; height: 256px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+    .hero-circle2 { position: absolute; right: 48px; bottom: 16px; width: 128px; height: 128px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+    .hero-content { position: relative; z-index: 1; max-width: 512px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); backdrop-filter: blur(4px); border-radius: 999px; padding: 4px 12px; font-size: 12px; font-weight: 500; margin-bottom: 16px; }
+    .hero h1 { font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 12px; }
+    .hero p { font-size: 14px; opacity: 0.85; line-height: 1.6; margin-bottom: 24px; }
+    .hero-btns { display: flex; gap: 12px; }
+    .btn-white { background: white; color: hsl(210 80% 45%); border: none; padding: 10px 24px; border-radius: 999px; font-weight: 600; font-size: 14px; cursor: pointer; }
+    .btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 10px 24px; border-radius: 999px; font-weight: 600; font-size: 14px; cursor: pointer; }
+    .btn-white:hover { background: rgba(255,255,255,0.9); }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+    /* Features */
+    .features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .feature-card { display: flex; align-items: center; gap: 12px; background: white; border-radius: 12px; padding: 16px; border: 1px solid hsl(210 25% 88%); }
+    .feature-icon { background: hsl(195 70% 92%); border-radius: 50%; padding: 10px; color: hsl(210 80% 45%); display: flex; }
+    .feature-card h4 { font-size: 12px; font-weight: 600; }
+    .feature-card span { font-size: 10px; color: hsl(210 15% 50%); }
+
+    /* Products */
+    .products-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .products-header h2 { font-size: 24px; font-weight: 700; }
+    .products-header p { font-size: 13px; color: hsl(210 15% 50%); margin-top: 4px; }
+    .filter-btns { display: flex; gap: 8px; }
+    .filter-btn { border: none; font-size: 12px; font-weight: 500; padding: 6px 16px; border-radius: 999px; cursor: pointer; transition: all 0.2s; }
+    .filter-btn.active { background: hsl(210 80% 45%); color: white; }
+    .filter-btn:not(.active) { background: hsl(195 70% 92%); color: hsl(210 60% 25%); }
+    .filter-btn:not(.active):hover { opacity: 0.8; }
+    .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .product-card { background: white; border-radius: 16px; border: 1px solid hsl(210 25% 88%); overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: box-shadow 0.3s; }
+    .product-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+    .product-img { background: hsl(195 70% 95%); padding: 24px; display: flex; align-items: center; justify-content: center; height: 176px; position: relative; }
+    .product-img .emoji { font-size: 60px; transition: transform 0.3s; }
+    .product-card:hover .emoji { transform: scale(1.1); }
+    .product-badge { position: absolute; top: 12px; left: 12px; background: linear-gradient(135deg, hsl(210 80% 45%), hsl(195 85% 40%)); color: white; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+    .product-pet { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); font-size: 10px; font-weight: 500; padding: 4px 8px; border-radius: 999px; color: hsl(210 15% 50%); }
+    .product-info { padding: 16px; }
+    .product-info h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .product-info .desc { font-size: 12px; color: hsl(210 15% 50%); margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .stars { display: flex; align-items: center; gap: 2px; margin-bottom: 12px; }
+    .star { color: hsl(210 25% 88%); font-size: 12px; }
+    .star.filled { color: #fbbf24; }
+    .reviews-count { font-size: 10px; color: hsl(210 15% 50%); margin-left: 4px; }
+    .product-bottom { display: flex; align-items: center; justify-content: space-between; }
+    .price { font-size: 18px; font-weight: 700; }
+    .original-price { font-size: 12px; color: hsl(210 15% 50%); text-decoration: line-through; margin-left: 6px; }
+    .add-cart { background: linear-gradient(135deg, hsl(210 80% 45%), hsl(195 85% 40%)); color: white; border: none; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: opacity 0.2s; }
+    .add-cart:hover { opacity: 0.9; }
+
+    /* Footer */
+    .footer { background: white; border-top: 1px solid hsl(210 25% 88%); margin-top: 48px; }
+    .footer-inner { max-width: 1152px; margin: 0 auto; padding: 40px 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .footer h4 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+    .footer p, .footer li { font-size: 12px; color: hsl(210 15% 50%); line-height: 1.8; }
+    .footer ul { list-style: none; }
+    .footer a:hover { color: hsl(210 80% 45%); }
+    .footer-bottom { border-top: 1px solid hsl(210 25% 88%); margin-top: 32px; padding-top: 24px; text-align: center; }
+    .footer-bottom p { font-size: 10px; color: hsl(210 15% 50%); }
+
+    .container { max-width: 1152px; margin: 0 auto; padding: 24px 16px; display: flex; flex-direction: column; gap: 32px; }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .container { animation: fadeIn 0.5s ease-out; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .menu-btn { display: flex; }
+      .features { grid-template-columns: repeat(2, 1fr); }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding: 32px 24px; }
+      .hero h1 { font-size: 24px; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .products-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      .products-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 15V4a1 1 0 0 0-1-1H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10"/></svg>
+        </div>
+        <div><span class="logo-text">AquaDogs</span><span class="logo-tag">Pet</span></div>
+      </div>
+      <nav>
+        <a href="#" class="active">Início</a>
+        <a href="#produtos">Produtos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <button class="cart-btn" onclick="alert('Carrinho: 3 itens')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span class="cart-badge" id="cartBadge">3</span>
+        </button>
+        <button class="menu-btn" onclick="document.querySelector('nav').style.display=document.querySelector('nav').style.display==='flex'?'none':'flex'">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="hsl(210 80% 45%)" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-circle1"></div>
+      <div class="hero-circle2"></div>
+      <div class="hero-content">
+        <div class="hero-badge">✨ Novidades da semana</div>
+        <h1>Banho & beleza para seu pet 🐾</h1>
+        <p>Produtos premium para o banho do seu cachorro e gato. Shampoos, condicionadores e acessórios com ingredientes naturais.</p>
+        <div class="hero-btns">
+          <button class="btn-white" onclick="document.getElementById('produtos').scrollIntoView({behavior:'smooth'})">Ver Produtos</button>
+          <button class="btn-outline">Ofertas</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg></div>
+        <div><h4>Frete grátis</h4><span>Acima de R$ 99</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
+        <div><h4>Compra segura</h4><span>Pagamento protegido</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1 2 2.5 3.5c1.5 1.5 3.5 2.5 3.5 2.5S21.1 15.5 15 18"/><path d="M11.7 7.6C9.5 8.6 7.6 10.5 6.7 13c-.9 2.4-.5 4.3.1 5.5"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.3 14.56 10.7 13 12 11"/></svg></div>
+        <div><h4>Ingredientes naturais</h4><span>Sem químicos agressivos</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"/><path d="m18 15-2-2"/><path d="m15 18-2-2"/></svg></div>
+        <div><h4>Satisfação garantida</h4><span>Troca em 30 dias</span></div>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section id="produtos">
+      <div class="products-header">
+        <div>
+          <h2>Nossos Produtos</h2>
+          <p>Tudo para o banho perfeito do seu pet</p>
+        </div>
+        <div class="filter-btns">
+          <button class="filter-btn active" onclick="filterProducts('all', this)">Todos</button>
+          <button class="filter-btn" onclick="filterProducts('dog', this)">🐶 Cães</button>
+          <button class="filter-btn" onclick="filterProducts('cat', this)">🐱 Gatos</button>
+        </div>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" id="contato">
+    <div class="footer-inner">
+      <div>
+        <div class="logo" style="margin-bottom:12px">
+          <div class="logo-icon" style="padding:8px;border-radius:12px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 15V4a1 1 0 0 0-1-1H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10"/></svg>
+          </div>
+          <div><span style="font-weight:700">AquaDogs</span> <span class="logo-tag">Pet</span></div>
+        </div>
+        <p>Produtos premium para o banho e cuidado do seu pet. Ingredientes naturais, qualidade garantida.</p>
+      </div>
+      <div>
+        <h4>Links</h4>
+        <ul>
+          <li><a href="#">Sobre nós</a></li>
+          <li><a href="#produtos">Produtos</a></li>
+          <li><a href="#">Política de troca</a></li>
+          <li><a href="#">Perguntas frequentes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <ul>
+          <li>📧 contato@aquadogspet.com.br</li>
+          <li>📱 (11) 99999-0000</li>
+          <li>📍 São Paulo, SP</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 AquaDogs Pet. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    const products = [
+      { name: "Shampoo Hidratante Cães", desc: "Fórmula suave com aloe vera e óleo de coco para pelos macios e brilhantes", price: 34.90, originalPrice: 49.90, rating: 4.8, reviews: 234, badge: "-30%", emoji: "🧴", pet: "dog" },
+      { name: "Condicionador Felino Premium", desc: "Desembaraçador especial para gatos com extratos de camomila", price: 29.90, rating: 4.6, reviews: 128, emoji: "🧴", pet: "cat" },
+      { name: "Kit Banho Completo", desc: "Shampoo + condicionador + perfume colônia para cães e gatos", price: 89.90, originalPrice: 119.90, rating: 4.9, reviews: 456, badge: "Mais vendido", emoji: "🎁", pet: "both" },
+      { name: "Perfume Colônia Pet", desc: "Fragrância suave e duradoura, hipoalergênico para todos os pets", price: 24.90, rating: 4.5, reviews: 89, emoji: "✨", pet: "both" },
+      { name: "Toalha Absorvente Pet", desc: "Microfibra ultra absorvente para secagem rápida após o banho", price: 39.90, rating: 4.7, reviews: 167, badge: "Novo", emoji: "🛁", pet: "both" },
+      { name: "Shampoo Anti-pulgas", desc: "Proteção e limpeza profunda contra pulgas e carrapatos", price: 42.90, originalPrice: 54.90, rating: 4.4, reviews: 312, badge: "-22%", emoji: "🛡️", pet: "dog" },
+      { name: "Escova Massageadora", desc: "Escova de silicone para massagear durante o banho, remove pelos soltos", price: 19.90, rating: 4.8, reviews: 203, emoji: "🪮", pet: "both" },
+      { name: "Sabonete Neutro Gatos", desc: "Sabonete em barra pH balanceado especial para a pele dos felinos", price: 15.90, rating: 4.3, reviews: 76, emoji: "🧼", pet: "cat" },
+    ];
+
+    let cartCount = 3;
+
+    function formatBRL(v) {
+      return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function petLabel(p) {
+      return p === "dog" ? "🐶 Cães" : p === "cat" ? "🐱 Gatos" : "🐾 Cães & Gatos";
+    }
+
+    function starsHTML(rating) {
+      let s = "";
+      for (let i = 0; i < 5; i++) s += `<span class="star ${i < Math.floor(rating) ? 'filled' : ''}">★</span>`;
+      return s;
+    }
+
+    function renderProducts(filter) {
+      const grid = document.getElementById("productsGrid");
+      const filtered = filter === "all" ? products : products.filter(p => p.pet === filter || p.pet === "both");
+      grid.innerHTML = filtered.map(p => `
+        <div class="product-card">
+          <div class="product-img">
+            <span class="emoji">${p.emoji}</span>
+            ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ""}
+            <span class="product-pet">${petLabel(p.pet)}</span>
+          </div>
+          <div class="product-info">
+            <h3>${p.name}</h3>
+            <p class="desc">${p.desc}</p>
+            <div class="stars">${starsHTML(p.rating)}<span class="reviews-count">(${p.reviews})</span></div>
+            <div class="product-bottom">
+              <div>
+                <span class="price">${formatBRL(p.price)}</span>
+                ${p.originalPrice ? `<span class="original-price">${formatBRL(p.originalPrice)}</span>` : ""}
+              </div>
+              <button class="add-cart" onclick="addToCart('${p.name}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function filterProducts(type, btn) {
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderProducts(type);
+    }
+
+    function addToCart(name) {
+      cartCount++;
+      document.getElementById("cartBadge").textContent = cartCount;
+      alert(`"${name}" adicionado ao carrinho!`);
+    }
+
+    renderProducts("all");
+  </script>
+</body>
+</html>
